@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>4.0</version>
-    <date>2018-12-11T22:06:28Z</date>
+    <version>4.2</version>
+    <date>2019-01-11T23:41:50Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -62,12 +62,7 @@
                         <name>Service state</name>
                     </valuemap>
                     <logtimefmt/>
-                    <preprocessing>
-                        <step>
-                            <type>6</type>
-                            <params/>
-                        </step>
-                    </preprocessing>
+                    <preprocessing/>
                     <jmx_endpoint/>
                     <timeout>3s</timeout>
                     <url/>
@@ -206,7 +201,7 @@
                             <graph_items>
                                 <graph_item>
                                     <sortorder>0</sortorder>
-                                    <drawtype>5</drawtype>
+                                    <drawtype>0</drawtype>
                                     <color>00C800</color>
                                     <yaxisside>0</yaxisside>
                                     <calc_fnc>2</calc_fnc>
