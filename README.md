@@ -1,29 +1,91 @@
+# Fail2Ban template for Zabbix
+### Features:
+
+- Automatic discovery of jails
+- Monitor service status
+- Monitor jails
+- Jails graph
+
+## Installation
+### 1. Set configuration file
+Download the latest version of configuration file `fail2ban.conf` from the [repo](https://github.com/hermanekt/zabbix-fail2ban-discovery-). Put the file here `/etc/zabbix/zabbix_agentd.d/fail2ban.conf`
+
+### 2. Grant access to Fail2Ban
+Fail2ban works only with `root` by default. We need to grant permission to Zabbix to access the Fail2ban. This is done by granting the required permissions to the socket of Fail2ban. Below is an example for Debian 9, all operations are performed under `root`. 
+
+The socket file is located at `/var/run/fail2ban/fail2ban.sock`. It has the following permissions by default:
+
+```bash
+ls -l /var/run/fail2ban/fail2ban.sock
+srwx------ 1 root root 0 Mar  4 17:51 /var/run/fail2ban/fail2ban.sock
+```
+
+So, if you will try to use Fail2ban, you will get access denied message:
+
+```bash
+fail2ban-client status
+ERROR  Permission denied to socket: /var/run/fail2ban/fail2ban.sock, (you must be root)
+```
+
+It's not a good idea to grant root permission to Zabbix in terms of security. Instead we will allow the Zabbix user to use this socket. Zabbix agent is run under the `zabbix` user. First, we need to create a new group called `fail2ban`. All users that belong to this group will be able to access Fail2ban. To create a group use the following command:
+
+```bash
+addgroup --group fail2ban
+```
+
+Now let's add the existing `zabbix` user to this newly created group:
+
+```bash
+usermod -a -G fail2ban zabbix
+```
+
+Then we must change the group owner of the socket from `root` to `fail2ban`:
+
+```bash
+chown root:fail2ban /var/run/fail2ban/fail2ban.sock
+```
+
+Finally adjust the permissions on the socket so that the group members can access it:
+
+```bash
+chmod g+rwx /var/run/fail2ban/fail2ban.sock
+```
+
+Now we can test that Zabbix agent can call Fail2ban:
+
+```bash
+su - zabbix --shell=/bin/bash -c ' fail2ban-client status pure-ftpd'
+``` 
+
+You will see a response similar to:
 
 ```
-Discovery Jails
-Monitor service and jails
-Jails graph
+Status
+|- Number of jail:      2
+`- Jail list:   pure-ftpd, sshd
 ```
 
-* Create file /etc/zabbix/zabbix_agentd.d/fail2ban.conf
+It means that everything works fine. Sometimes you may see a warning:
 
-* Content of file:
 ```
-UserParameter=fail2ban.status[*],fail2ban-client status '$1' | grep 'Currently banned:' | grep -E -o '[0-9]+'
+ warning: cannot change directory to /var/lib/zabbix/: No such file or directory`
+```
 
-UserParameter=fail2ban.discovery,fail2ban-client status | grep 'Jail list:' | sed -e 's/^.*:\W\+//' -e 's/\(\(\w\|-\)\+\)/{"{#JAIL}":"\1"}/g' -e 's/.*/{"data":[\0]}/'
+It happens when the Zabbix home directory does not exist (installation issue?). In this case simply create this directory:
+
+```bash
+mkdir /var/lib/zabbix
+chown zabbix:zabbix /var/lib/zabbix
 ```
-* Change zabbix agent configuration (Dont forget uncomment line) /etc/zabbix/zabbix_agentd.conf
-```
-OLD: UnsafeUserParameters=0
-```
-```
-New: UnsafeUserParameters=1
-```
-* Restart zabbix agent:
+
+After that perform the test above and the error message should disappear.
+
+### Restart Zabbix Agent
+
 ```
 systemctl restart zabbix-agent.service
 ```
-* Import template
 
-* Assign template to host.
+### Configure the Zabbix Server
+1. Import the template file into Zabbix Server (this operation is done only once). Use the template file that matches your Zabbix Server version.
+2. Assign the template to a host that you want to monitor.
