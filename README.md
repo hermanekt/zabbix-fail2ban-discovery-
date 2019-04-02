@@ -75,6 +75,20 @@ root@server:~$ chown zabbix:zabbix /var/lib/zabbix
 
 After that perform the test above and the error message should disappear.
 
+The installation instructions cover changing the fail2ban socket permissions for access as a non root user, however these changes are lost the next time the socket is created.
+
+To persist on a system where fail2ban is managed by systemd, add the following to the fail2ban service override file
+
+```console
+systemctl edit fail2ban
+```
+```console
+[Service]
+ExecStartPost=/bin/sh -c "while ! [ -S /run/fail2ban/fail2ban.sock ]; do sleep 1; done"
+ExecStartPost=/bin/chgrp fail2ban /run/fail2ban/fail2ban.sock
+ExecStartPost=/bin/chmod g+w /run/fail2ban/fail2ban.sock
+```
+
 ### Restart Zabbix Agent
 
 ```console
