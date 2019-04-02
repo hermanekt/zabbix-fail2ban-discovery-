@@ -80,7 +80,7 @@ The installation instructions cover changing the fail2ban socket permissions for
 To persist on a system where fail2ban is managed by systemd, add the following to the fail2ban service override file
 
 ```console
-systemctl edit fail2ban
+root@server:~$ systemctl edit fail2ban
 ```
 ```console
 [Service]
@@ -91,7 +91,7 @@ ExecStartPost=/bin/chmod g+w /run/fail2ban/fail2ban.sock
 
 ### Restart Zabbix Agent
 
-```console
+```ini
 root@server:~$ systemctl restart zabbix-agent.service
 ```
 
