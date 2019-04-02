@@ -82,7 +82,7 @@ To persist on a system where fail2ban is managed by systemd, add the following t
 ```console
 root@server:~$ systemctl edit fail2ban
 ```
-```console
+```ini
 [Service]
 ExecStartPost=/bin/sh -c "while ! [ -S /run/fail2ban/fail2ban.sock ]; do sleep 1; done"
 ExecStartPost=/bin/chgrp fail2ban /run/fail2ban/fail2ban.sock
@@ -91,7 +91,7 @@ ExecStartPost=/bin/chmod g+w /run/fail2ban/fail2ban.sock
 
 ### Restart Zabbix Agent
 
-```ini
+```console
 root@server:~$ systemctl restart zabbix-agent.service
 ```
 
