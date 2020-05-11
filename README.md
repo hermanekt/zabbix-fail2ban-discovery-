@@ -8,7 +8,7 @@
 
 ## Installation
 ### 1. Set configuration file
-Download the latest version of configuration file `fail2ban.conf` from the [repo](https://github.com/hermanekt/zabbix-fail2ban-discovery-). Put the file here `/etc/zabbix/zabbix_agentd.d/fail2ban.conf`
+Download the latest version of configuration file `fail2ban.conf` from the [repo](https://github.com/hermanekt/zabbix-fail2ban-discovery-). Put the file here `/etc/zabbix/zabbix_agentd.d/fail2ban.conf` or here for zabbix agent 2 `/etc/zabbix/zabbix_agentd2.d/fail2ban.conf`
 
 ### 2. Grant access to Fail2Ban
 Fail2ban works only with `root` by default. We need to grant permission to Zabbix to access the Fail2ban. This is done by granting the required permissions to the socket of Fail2ban. Below is an example for Debian 9, all operations are performed under `root`. 
