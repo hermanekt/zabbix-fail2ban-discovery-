@@ -10,7 +10,7 @@
     <templates>
         <template>
             <template>Template Fail2ban Ubuntu 20.04</template>
-            <name>Template Fail2ban</name>
+            <name>Template Fail2ban Ubuntu 20.04</name>
             <description/>
             <groups>
                 <group>
@@ -243,7 +243,7 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template Fail2ban:proc.num[python3,,,fail2ban-server].last()}=0</expression>
+            <expression>{Template Fail2ban Ubuntu 20.04:proc.num[python3,,,fail2ban-server].last()}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Fail2ban server is Down</name>
