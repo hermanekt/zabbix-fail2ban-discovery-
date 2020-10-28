@@ -207,7 +207,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>Template Fail2ban</host>
+                                        <host>Template Fail2ban Ubuntu 20.04</host>
                                         <key>fail2ban.status[{#JAIL}]</key>
                                     </item>
                                 </graph_item>
