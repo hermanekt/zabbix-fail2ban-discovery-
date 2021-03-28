@@ -30,7 +30,7 @@ ERROR  Permission denied to socket: /var/run/fail2ban/fail2ban.sock, (you must b
 It's not a good idea to grant root permission to Zabbix in terms of security. Instead we will allow the Zabbix user to use this socket. Zabbix agent is run under the `zabbix` user. First, we need to create a new group called `fail2ban`. All users that belong to this group will be able to access Fail2ban. To create a group use the following command:
 
 ```console
-root@server:~$ addgroup --group fail2ban
+root@server:~$ groupadd fail2ban
 ```
 
 Now let's add the existing `zabbix` user to this newly created group:
