@@ -54,7 +54,7 @@ root@server:~$ chmod g+rwx /var/run/fail2ban/fail2ban.sock
 Now we can test that Zabbix agent can call Fail2ban:
 
 ```console
-root@server:~$ su - zabbix --shell=/bin/bash -c ' fail2ban-client status pure-ftpd'
+root@server:~$ su - zabbix --shell=/bin/bash -c ' fail2ban-client status'
 Status
 |- Number of jail:      2
 `- Jail list:   pure-ftpd, sshd
