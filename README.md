@@ -23,7 +23,7 @@ srwx------ 1 root root 0 Mar  4 17:51 /var/run/fail2ban/fail2ban.sock
 So, if you will try to use Fail2ban, you will get access denied message:
 
 ```console
-root@server:~$ fail2ban-client status
+user@server:~$ fail2ban-client status
 ERROR  Permission denied to socket: /var/run/fail2ban/fail2ban.sock, (you must be root)
 ```
 
