@@ -8,7 +8,8 @@
 
 ## Installation
 ### 1. Set configuration file
-Download the latest version of configuration file `fail2ban.conf` from the [repo](https://github.com/hermanekt/zabbix-fail2ban-discovery-). Put the file here `/etc/zabbix/zabbix_agentd.d/fail2ban.conf` or here for zabbix agent 2 `/etc/zabbix/zabbix_agentd2.d/fail2ban.conf`
+Download the latest version of configuration file `fail2ban.conf` from the [repo](https://github.com/hermanekt/zabbix-fail2ban-discovery-).
+Put the file here `/etc/zabbix/zabbix_agentd.d/fail2ban.conf` or here for zabbix agent 2 `/etc/zabbix/zabbix_agentd2.d/fail2ban.conf`
 
 ### 2. Grant access to Fail2Ban
 Fail2ban works only with `root` by default. We need to grant permission to Zabbix to access the Fail2ban by adding this 2 lines to `/etc/sudoers`:
@@ -16,10 +17,36 @@ Fail2ban works only with `root` by default. We need to grant permission to Zabbi
 zabbix ALL=NOPASSWD: /usr/bin/fail2ban-client status
 zabbix ALL=NOPASSWD: /usr/bin/fail2ban-client status *
 ```
-Then `/etc/init.d/sudo restart` and `/etc/init.d/zabbix-agent2 restart` OR `/etc/init.d/zabbix-agend restart` if you use zabbix1.
+Then apply new sudoers and zabbix agent setting
+```console
+/etc/init.d/sudo restart
+/etc/init.d/zabbix-agent restart 
+```
+OR
+```console
+/etc/init.d/zabbix-agend restart
+```
+`If you have systemd, please use this correct command.`
+```console
+systemctl restart zabbix-agent
+```
+OR
+```console
+systemctl restart zabbix-agent2
+```
 
-Now we can test that Zabbix agent can call Fail2ban:
+### 3. Test Zabbix Agent setting
 
+Zabbix Agent
+```console
+root@server:~$ sudo -u zabbix zabbix_agent -c /etc/zabbix/zabbix_agent.conf -t fail2ban.discovery
+fail2ban.discovery [s|{"data":[{"{#JAIL}":"imapd"}, {"{#JAIL}":"sendmail-reject"}, {"{#JAIL}":"sshd"}, {"{#JAIL}":"wordpress"}]}]
+
+root@server:~$ sudo -u zabbix zabbix_agent -c /etc/zabbix/zabbix_agent.conf -t fail2ban.status['sshd']
+fail2ban.status[sshd]                         [s|191]
+```
+
+Zabbix Agent 2
 ```console
 root@server:~$ sudo -u zabbix zabbix_agent2 -c /etc/zabbix/zabbix_agent2.conf -t fail2ban.discovery
 fail2ban.discovery [s|{"data":[{"{#JAIL}":"imapd"}, {"{#JAIL}":"sendmail-reject"}, {"{#JAIL}":"sshd"}, {"{#JAIL}":"wordpress"}]}]
