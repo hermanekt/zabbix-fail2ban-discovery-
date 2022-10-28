@@ -24,6 +24,7 @@ Then apply new sudoers and zabbix agent setting
 ```
 OR
 ```console
+/etc/init.d/sudo restart
 /etc/init.d/zabbix-agend restart
 ```
 `If you have systemd, please use this correct command.`
