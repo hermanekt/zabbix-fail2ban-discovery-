@@ -3,17 +3,6 @@
   become: yes
   tasks:
 
-    - name: add fail2ban group
-      group:
-        name: fail2ban
-        state: present
-
-    - name: add zabbix user to fail2ban group
-      user:
-        name: zabbix
-        groups: fail2ban
-        append: yes
-
     - name: add zabbix userparameter for fail2ban
       tags:
          - userparameter   
@@ -27,21 +16,3 @@
       service:
         name: zabbix-agent
         state: restarted
-
-    - name: create directory for scripts
-      file:
-        path: /root/scripts
-        state: directory
-
-    - name: create script to make the group ownership and permissions of fail2ban socket
-      template:
-        src: script/fail2ban-socket-perms.sh
-        dest: /root/scripts/fail2ban-socket-perms.sh
-        mode: a+x
-
-    - name: permissions over fail2ban socket cronjob
-      cron: 
-        name: set permissions for fail2ban socket
-        minute: 0
-        hour: '*'
-        job: /root/scripts/fail2ban-socket-perms.sh
