@@ -11,6 +11,15 @@
 Download the latest version of configuration file `fail2ban.conf` from the [repo](https://github.com/hermanekt/zabbix-fail2ban-discovery-).
 Put the file here `/etc/zabbix/zabbix_agentd.d/fail2ban.conf` or here for zabbix agent 2 `/etc/zabbix/zabbix_agentd2.d/fail2ban.conf`
 
+Zabbix Agent
+```console
+wget https://raw.githubusercontent.com/hermanekt/zabbix-fail2ban-discovery-/master/fail2ban.conf -O /etc/zabbix/zabbix_agentd.d/fail2ban.conf
+```
+Zabbix Agent 2
+```console
+wget https://raw.githubusercontent.com/hermanekt/zabbix-fail2ban-discovery-/master/fail2ban.conf -O /etc/zabbix/zabbix_agent2.d/fail2ban.conf
+```
+
 ### 2. Grant access to Fail2Ban
 Fail2ban works only with `root` by default. We need to grant permission to Zabbix to access the Fail2ban by adding this 2 lines to `/etc/sudoers`:
 ```console
@@ -60,6 +69,7 @@ The response above with list of jails means that everything works fine.
 
 ### Configure the Zabbix Server
 1. Import the template file into Zabbix Server (this operation is done only once).
+##### There is 2 verisons, for Ubuntu/Debian and for other systems!
 2. Change the update Interval to what pleases you (default is 1 minute).
 3. Add the template to your hosts.
 
