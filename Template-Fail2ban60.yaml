@@ -1,0 +1,86 @@
+zabbix_export:
+  version: '6.0'
+  date: '2023-11-29T19:16:41Z'
+  groups:
+    - uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
+  templates:
+    - uuid: 48d19098672f4e7aa7dab1942260d87d
+      template: 'Template Fail2ban'
+      name: 'Template Fail2ban'
+      description: |
+        Developed by initMAX s.r.o.,
+        Tomas Hermanek
+        https://github.com/hermanekt/zabbix-fail2ban-discovery-
+      groups:
+        - name: Templates
+      items:
+        - uuid: de416c540fd0435db1822e38c036f0d7
+          name: 'Fail2Ban service is running'
+          key: 'proc.num[fail2ban-server]'
+          delay: '60'
+          description: 'ping - tests if the server is alive'
+          valuemap:
+            name: 'Service state'
+          tags:
+            - tag: App
+              value: Fail2ban
+          triggers:
+            - uuid: ffa07343b51d4bf58c2b8c324c6a7a62
+              expression: 'min(/Template Fail2ban/proc.num[fail2ban-server],#3)=0'
+              name: 'Fail2ban server is Down'
+              priority: AVERAGE
+              description: 'If service fail2ban-server not running for 3 last check, create new event.'
+              tags:
+                - tag: App
+                  value: Fail2ban
+      discovery_rules:
+        - uuid: ccbd8ba7a96d47b8953af017e3b0f803
+          name: 'Fail2ban discovery'
+          key: fail2ban.discovery
+          delay: 1h
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#JAIL}'
+                value: '{$FAIL2BAN.ADD}'
+                formulaid: A
+              - macro: '{#JAIL}'
+                value: '{$FAIL2BAN.EXCLUDE}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+          description: 'Discovery of jails from fail2ban daemon.'
+          item_prototypes:
+            - uuid: 8cc0b05211fc4278b2feb46727a4ca97
+              name: 'Fail2ban {#JAIL} banned IPs'
+              key: 'fail2ban.status[{#JAIL}]'
+              history: 7d
+              units: '!count'
+              tags:
+                - tag: App
+                  value: Fail2ban
+          graph_prototypes:
+            - uuid: b151e34af81548b1b92cf0a6b36cdee7
+              name: 'Count of banned IPs on jail {#JAIL}'
+              ymin_type_1: FIXED
+              graph_items:
+                - color: FF0000
+                  item:
+                    host: 'Template Fail2ban'
+                    key: 'fail2ban.status[{#JAIL}]'
+      tags:
+        - tag: App
+          value: Fail2ban
+      macros:
+        - macro: '{$FAIL2BAN.MATCHES}'
+          value: '.*'
+        - macro: '{$FAIL2BAN.NOT_MATCHES}'
+          value: TEST|TEST2
+      valuemaps:
+        - uuid: 249132609d114d21bf84a38a3c559bfd
+          name: 'Service state'
+          mappings:
+            - value: '0'
+              newvalue: Down
+            - value: '1'
+              newvalue: Up
