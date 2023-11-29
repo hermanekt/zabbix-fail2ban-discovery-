@@ -18,7 +18,7 @@ zabbix_export:
         - uuid: de416c540fd0435db1822e38c036f0d7
           name: 'Fail2Ban service is running'
           key: 'proc.num[fail2ban-server]'
-          delay: '60'
+          delay: '1m'
           description: 'ping - tests if the server is alive'
           valuemap:
             name: 'Service state'
