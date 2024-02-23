@@ -43,10 +43,10 @@ zabbix_export:
             evaltype: AND
             conditions:
               - macro: '{#JAIL}'
-                value: '{$FAIL2BAN.ADD}'
+                value: '{$FAIL2BAN.MATCHES}'
                 formulaid: A
               - macro: '{#JAIL}'
-                value: '{$FAIL2BAN.EXCLUDE}'
+                value: '{$FAIL2BAN.NOT_MATCHES}'
                 operator: NOT_MATCHES_REGEX
                 formulaid: B
           description: 'Discovery of jails from fail2ban daemon.'
