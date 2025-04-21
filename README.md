@@ -1,4 +1,19 @@
 # Fail2Ban template for Zabbix
+> **⚠️ This repository is DEPRECATED.**  
+> Development has moved to an all‑new Fail2ban template that lives here:  
+> 👉 <https://github.com/initMAX/Zabbix-Templates/tree/production/free/Fail2ban>  
+>
+> ### Why migrate?
+> * **More metrics** – 1 master + 6 dependent item prototypes per jail  
+>   (current / total *banned* and *failed* counts, banned‑IP list, status)
+> * **Smarter triggers** – 4 built‑in triggers (service down, any ban, ban‑count threshold, spike in failed logins)  
+>   instead of just one “service down” trigger 
+> * **Ready‑made dashboard** for Zabbix 7 that visualises banned IP trends and jail health
+> * **Master + dependent design** → only one `fail2ban‑client` call per jail, lighter agent load  
+> * **Zabbix 7.0 syntax & LTS support**
+>
+> Please open all new issues and pull‑requests in the new repository.
+
 ### Features:
 
 - Automatic discovery of jails
